@@ -1,5 +1,5 @@
 package calculatrice;
-
+import java.util.Stack;
 public class Calculator implements CalculatorModelInterface {
 	private double accu;
 	private Pile pile;
@@ -13,7 +13,7 @@ public class Calculator implements CalculatorModelInterface {
 
 	@Override
 	public void add() throws Exception {
-		//Adds last element of the pile to the accumulator
+		//Adds last 2 elements of the pile
 		
 		if (pile.isEmpty()) {
 			throw new Exception("Pile vide, rentrer un nombre pour procéder à l'opération");
@@ -21,39 +21,82 @@ public class Calculator implements CalculatorModelInterface {
 		
 		else {
 			double x = pile.pop();
-			accu += x;
+			pile.drop();
+			double y = pile.pop();
+			pile.drop();
+			accu = x + y;
 			pile.push(accu);
 		}
 	}
 
 	@Override
 	public void substract() throws Exception {
-		// TODO Auto-generated method stub
+		//Substracts last 2 elements of the pile
 
 		if (pile.isEmpty()) {
 			throw new Exception("Pile vide, rentrer un nombre pour procéder à l'opération");
+		}
+		
+		else {
+			double x = pile.pop();
+			pile.drop();
+			double y = pile.pop();
+			pile.drop();
+			accu = x - y;
+			pile.push(accu);
 		}
 	}
 
 	@Override
 	public void multiply() throws Exception {
-		// TODO Auto-generated method stub
-
+		//Multiplies last 2 elements of the pile
+		
+		if (pile.isEmpty()) {
+			throw new Exception("Pile vide, rentrer un nombre pour procéder à l'opération");
+		}
+		
+		else {
+			double x = pile.pop();
+			pile.drop();
+			double y = pile.pop();
+			pile.drop();
+			accu = x * y;
+			pile.push(accu);
+		}
 	}
 
 	@Override
 	public void divide() throws Exception {
-		// TODO Auto-generated method stub
+		//Divides last 2 elements of the pile
 
 		if (pile.isEmpty()) {
 			throw new Exception("Pile vide, rentrer un nombre pour procéder à l'opération");
+		}
+		
+		else {
+			double x = pile.pop();
+			pile.drop();
+			double y = pile.pop();
+			pile.drop();
+			accu = x / y;
+			pile.push(accu);
 		}
 	}
 
 	@Override
 	public void opposite() throws Exception {
-		// TODO Auto-generated method stub
-
+		//Returns the opposed value of last element of the pile
+		
+		if (pile.isEmpty()) {
+			throw new Exception("Pile vide, rentrer un nombre pour procéder à l'opération");
+		}
+		
+		else {
+			double x = pile.pop();
+			pile.drop();
+			accu += -1 * x;
+			pile.push(accu);
+		}
 	}
 
 	@Override
@@ -89,6 +132,17 @@ public class Calculator implements CalculatorModelInterface {
 		//Deletes all elements from the pile
 
 		pile.clear();
+		accu = 0.0;
+	}
+	
+	public Stack<Double> getPile(){
+		return pile.getPile();
+	}
+	
+	public double getAccu() {
+		//Getter accu
+		
+		return accu;
 	}
 
 }

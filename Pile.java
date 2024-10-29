@@ -1,7 +1,7 @@
 package calculatrice;
 import java.util.Stack;
 
-public class Pile {
+public class Pile implements CalculatorModelInterface {
 	//Pile 
 	
 	public Stack<Double> pile;
@@ -10,6 +10,18 @@ public class Pile {
 		//Constructor
 		
 		pile = new Stack<>();
+	}
+	
+	public Stack<Double> getPile(){
+		//Getter Pile
+		
+		return pile;
+	}
+	
+	public Boolean isEmpty() {
+		//BOolean test is pile empty
+		
+		return pile.isEmpty();
 	}
 	
 	public void push(double n) {
@@ -41,5 +53,39 @@ public class Pile {
 		//Deletes all elements from the pile
 		
 		pile.clear();
+	}
+
+	@Override
+	public void add() {
+		//Pile doesnt add
+		
+		throw new UnsupportedOperationException("Pile ne réalise pas d'opérations")		;
+	}
+
+	@Override
+	public void substract() {
+		//Pile doesnt substract
+		
+		throw new UnsupportedOperationException("Pile ne réalise pas d'opérations")		;
+	}
+
+	@Override
+	public void multiply() {
+		//Pile doesnt multiply
+		
+		throw new UnsupportedOperationException("Pile ne réalise pas d'opérations")		;
+	}
+
+	@Override
+	public void divide() {
+		//Pile doesnt divide
+		
+		throw new UnsupportedOperationException("Pile ne réalise pas d'opérations")		;
+	}
+
+	@Override
+	public void opposite() {
+		//Pile doesnt oppose
+		throw new UnsupportedOperationException("Pile ne réalise pas d'opérations")		;
 	}
 }
