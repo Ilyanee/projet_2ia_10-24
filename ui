@@ -16,18 +16,26 @@ public class ui extends Application {
     public void start(Stage primaryStage) {
         calculatrice = new Calculator();
         
-        primaryStage.setTitle("Calculatrice");
+        primaryStage.setTitle("Calculatrice"); //Fenêtre principale
+        
+        //Affichage accumulateur
         
         accumulateurField = new TextField();
         accumulateurField.setEditable(false);
         
+        //Affichage pile
+        
         pileField = new TextArea();
         pileField.setEditable(false);
         pileField.setPrefRowCount(3);
-
+		
+		//Affichage écran
+		
         VBox displayPanel = new VBox(10, new Label("Accumulateur:"), accumulateurField, 
         new Label("Pile:"), pileField);
         displayPanel.setPadding(new Insets(12));
+        
+        //Affichage boutons
         
         GridPane buttonPanel = new GridPane();
         buttonPanel.setHgap(10);
@@ -47,7 +55,7 @@ public class ui extends Application {
             }
         }
         
-     // Configuration de la scène principale
+     // Scène principale
         BorderPane root = new BorderPane();
         root.setTop(displayPanel);
         root.setCenter(buttonPanel);
