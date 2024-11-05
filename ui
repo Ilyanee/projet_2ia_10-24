@@ -110,7 +110,7 @@ public class ui extends Application {
     //Affichage 3 derniers éléments de la pile
 
     private void updateDisplay() {
-        accumulateurField.setText(String.valueOf(calculatrice.getAccumulateur()));
+        accumulateurField.setText(String.valueOf(calculatrice.getAccu()));
         Stack<Double> pile = calculatrice.getPile();
         StringBuilder pileText = new StringBuilder();
         int count = 0;
