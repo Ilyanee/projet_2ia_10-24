@@ -47,6 +47,7 @@ public class Main extends Application {
          * pour editer les boutons individuellement : setId()
          * donner un id au bouton et le selectionner apres avec getId() correspondant (faire une comparaison)
          * pour changer les couleurs (fond et texte) : setStyle()
+	 * modifiable avec css sinon
          */
                 
         
