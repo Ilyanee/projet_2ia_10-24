@@ -5,7 +5,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
-import javafx.scene.text.Font;
 import java.util.Stack;
 
 public class ui extends Application {
