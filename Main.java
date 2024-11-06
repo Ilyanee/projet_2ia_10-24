@@ -43,7 +43,7 @@ public class Main extends Application {
         GridPane buttonPanel = new GridPane();
         buttonPanel.setHgap(10);
         buttonPanel.setVgap(10);
-        buttonPanel.setPadding(new Insets(10));
+        buttonPanel.setPadding(new Insets(11));
         buttonPanel.setStyle("-fx-background-color: lightslategray");
 
         // Création des boutons d'opérations et d'actions
@@ -52,7 +52,7 @@ public class Main extends Application {
             "4", "5", "6", "-",
             "1", "2", "3", "*",
             "0", ".", "Empiler", "/",
-            "Dépiler", "Effacer Tout"
+            "Dépiler",  "(-)", "Effacer Tout"
         };
 
         int row = 0, col = 0;
@@ -62,7 +62,7 @@ public class Main extends Application {
             button.setOnAction(e -> handleButtonAction(label));
             button.setPrefSize(80, 40); // Taille ajustée pour tous les boutons
             button.setFont(new Font("Arial", 14));
-            if (button.getId() == "+" || button.getId() == "-" || button.getId() == "*" || button.getId() == "/") {
+            if (button.getId() == "+" || button.getId() == "-" || button.getId() == "*" || button.getId() == "/" || button.getId() == "(-)" || button.getId() == "Effacer Tout" || button.getId() == "Dépiler" || button.getId() == "Empiler") {
             	button.setStyle("-fx-background-color: coral");
             }
             else {
