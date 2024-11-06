@@ -1,4 +1,4 @@
-package calculatrice;
+package application;
 
 public interface CalculatorModelInterface {
 	//Interface for common operations
