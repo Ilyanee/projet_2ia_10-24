@@ -1,4 +1,4 @@
-package calculatrice;
+package application;
 import java.util.Stack;
 public class Calculator implements CalculatorModelInterface {
 	private double accu;
