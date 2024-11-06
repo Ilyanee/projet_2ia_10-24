@@ -1,8 +1,8 @@
 package application;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
@@ -10,152 +10,139 @@ import javafx.geometry.Insets;
 import java.util.Stack;
 
 public class Main extends Application {
-	private Calculator calculatrice;
+    private calculator calculatrice;
     private TextField accumulateurField;
     private TextArea pileField;
-    private TextField EmpileField;
-    
+    private TextField empileField;
+
     public void start(Stage primaryStage) {
-        calculatrice = new Calculator();
-        
-        primaryStage.setTitle("Calculatrice"); //Fenêtre principale
-        
-        //Affichage accumulateur
-        
+        calculatrice = new calculator();
+
+        primaryStage.setTitle("Calculatrice NPI");
+
+        // Affichage accumulateur
         accumulateurField = new TextField();
         accumulateurField.setEditable(false);
-        
-        //Affichage pile
-        
+
+        // Affichage pile
         pileField = new TextArea();
         pileField.setEditable(false);
         pileField.setPrefRowCount(3);
+
+        // Affichage zone d'empilement
+        empileField = new TextField();
+        empileField.setEditable(true);
+
+        // Affichage écran
+        VBox displayPanel = new VBox(10, new Label("Résultat:"), accumulateurField,
+            new Label("Pile:"), pileField, new Label("Empiler:"), empileField);
+        displayPanel.setPadding(new Insets(15));
+        displayPanel.setStyle("-fx-background-color: lightslategray");
         
-        //Affichage zone d'empilement
-        
-        EmpileField = new TextField();
-        EmpileField.setEditable(true);
-		
-		//Affichage écran
-		
-        VBox displayPanel = new VBox(9, new Label("Résultat:"), accumulateurField, 
-        new Label("Pile:"), pileField, new Label("Empiler:"), EmpileField);
-        displayPanel.setPadding(new Insets(12));
-        
-        //Affichage et définition boutons
-        /*Supprimer ce commentaire après usage
-         * pour editer les boutons individuellement : setId()
-         * donner un id au bouton et le selectionner apres avec getId() correspondant (faire une comparaison)
-         * pour changer les couleurs (fond et texte) : setStyle()
-	 * modifiable avec css sinon
-         */
-                
-        
+        // Panel pour les boutons numériques et opérations de base
         GridPane buttonPanel = new GridPane();
-        buttonPanel.setPrefHeight(1600);
-        buttonPanel.setPrefWidth(1600);
-        buttonPanel.setHgap(18);
-        buttonPanel.setVgap(18);
-        buttonPanel.setPadding(new Insets(8));
-        
-        String[] buttonLabels = {"+", "-", "*", "/","Empiler","Dépiler","Effacer Tout"};
+        buttonPanel.setHgap(10);
+        buttonPanel.setVgap(10);
+        buttonPanel.setPadding(new Insets(10));
+        buttonPanel.setStyle("-fx-background-color: lightslategray");
+
+        // Création des boutons d'opérations et d'actions
+        String[] buttonLabels = {
+            "7", "8", "9", "+",
+            "4", "5", "6", "-",
+            "1", "2", "3", "*",
+            "0", ".", "Empiler", "/",
+            "Dépiler", "Effacer Tout"
+        };
+
         int row = 0, col = 0;
         for (String label : buttonLabels) {
             Button button = new Button(label);
+            button.setId(label);
             button.setOnAction(e -> handleButtonAction(label));
-            button.setPrefWidth(500);
-            button.setPrefHeight(500);
-            button.setFont(new Font("Times New Roman", 18));
+            button.setPrefSize(80, 40); // Taille ajustée pour tous les boutons
+            button.setFont(new Font("Arial", 14));
+            if (button.getId() == "+" || button.getId() == "-" || button.getId() == "*" || button.getId() == "/") {
+            	button.setStyle("-fx-background-color: coral");
+            }
+            else {
+            	button.setStyle("-fx-background-color: beige");
+            }
             buttonPanel.add(button, col++, row);
-            if (col > 2) { //3 boutons par colonne
+            if (col > 3) { // 4 boutons par rangée
                 col = 0;
                 row++;
-            }            
-          
+            }
+            else if (button.getId() == "Effacer Tout") { // Adaptation taille bouton "Effacer Tout"
+            	button.setPrefSize(160, 40);
+            	GridPane.setColumnSpan(button, 2);;
+            }
+            
         }
-        
-     //Scène principale
+
+        // Scène principale avec BorderPane
         BorderPane root = new BorderPane();
         root.setTop(displayPanel);
         root.setCenter(buttonPanel);
-        
-        Scene scene = new Scene(root, 600, 400);
-        primaryStage.setScene(scene);
-        
-     //Actions depuis le clavier
-        scene.setOnKeyPressed(event -> {
-            try {
-                if (event.getText().equals("+")) {
-                    calculatrice.add();
-                } 
-                else if (event.getText().equals("-")) {
-                    calculatrice.substract();
-                } 
-                else if (event.getText().equals("*")) {
-                    calculatrice.multiply();
-                } 
-                else if (event.getText().equals("/")) {
-                    calculatrice.divide();
-                }
-                else if (event.getCode() == KeyCode.ENTER) {
-                	calculatrice.push(Double.parseDouble(EmpileField.getText()));
-                	EmpileField.clear();
-                	
-                }
-                else if (event.getCode() == KeyCode.BACK_SPACE) {
-                	calculatrice.drop();
-                }
 
+        Scene scene = new Scene(root, 400, 500); // Taille ajustée pour le format calculatrice
+        primaryStage.setScene(scene);
+
+        // Donne le focus à la scène au démarrage
+        scene.getRoot().requestFocus();
+
+        // Actions depuis le clavier pour les opérations et empiler
+        empileField.setOnAction(event -> {
+            String input = empileField.getText().trim();
+            empileField.clear();
+            try {
+                switch (input) {
+                    case "+" -> calculatrice.add();
+                    case "-" -> calculatrice.substract();
+                    case "*" -> calculatrice.multiply();
+                    case "/" -> calculatrice.divide();
+                    case "" -> showAlert("Erreur", "Aucune valeur entrée.");
+                    default -> calculatrice.push(Double.parseDouble(input));
+                }
                 updateDisplay();
+            } catch (NumberFormatException e) {
+                showAlert("Erreur", "Veuillez entrer un nombre valide.");
             } catch (Exception e) {
                 showAlert("Erreur", e.getMessage());
             }
         });
-        
+
         primaryStage.show();
-}
-    
+    }
+
     private void handleButtonAction(String command) {
         try {
             switch (command) {
-                case "Empiler":
-                        try {
-                            double value = Double.parseDouble(EmpileField.getText());
-                            calculatrice.push(value);
-                            EmpileField.clear();
-                        } catch (NumberFormatException e) {
-                            showAlert("Erreur", "Veuillez entrer un nombre valide.");
-                        }
-                    
-                    break;
-                case "+":
-                    calculatrice.add();
-                    break;
-                case "-":
-                    calculatrice.substract();
-                    break;
-                case "*":
-                    calculatrice.multiply();
-                    break;
-                case "/":
-                    calculatrice.divide();
-                    break;
-                case "Effacer":
-                    calculatrice.clear();
-                    break;
-                case "Dépiler":
-                    calculatrice.drop();
-                    break;
-
+                case "Empiler" -> {
+                    double value = Double.parseDouble(empileField.getText());
+                    calculatrice.push(value);
+                    empileField.clear();
+                }
+                case "+" -> calculatrice.add();
+                case "-" -> calculatrice.substract();
+                case "*" -> calculatrice.multiply();
+                case "/" -> calculatrice.divide();
+                case "Effacer Tout" -> calculatrice.clear();
+                case "Dépiler" -> calculatrice.drop();
+                default -> {
+                    // Pour les boutons numériques et le point
+                    empileField.appendText(command);
+                }
             }
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Veuillez entrer un nombre valide.");
         } catch (Exception ex) {
             showAlert("Erreur", ex.getMessage());
         }
         updateDisplay();
     }
-    
-    //Affichage 3 derniers éléments de la pile
 
+    // Affichage des 3 derniers éléments de la pile
     private void updateDisplay() {
         accumulateurField.setText(String.valueOf(calculatrice.getAccu()));
         Stack<Double> pile = calculatrice.getPile();
